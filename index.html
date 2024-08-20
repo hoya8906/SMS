@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>:: SMS ::</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script type="module" defer src="./js/app.js"></script>
+  <style>
+    /* 전체 레이아웃에 대한 기본 스타일 */
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    /* 줄 간격 및 버튼 높이 조정 */
+    .input-group,
+    .form-select,
+    button {
+      margin-bottom: 10px;
+      height: calc(1.5em + 1rem + 2px);
+    }
+
+    /* 테이블 스타일 조정 */
+    table {
+      margin-top: 20px;
+    }
+
+    /* 검색 및 정렬 섹션 조정 */
+    .row>.col-2,
+    .row>.col-3,
+    .row>.col-4 {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .row>.col-2 {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .row>.col-3 {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .row>.col-4 {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    /* 모바일 환경 조정 */
+    @media (max-width: 768px) {
+
+      .row>.col-2,
+      .row>.col-auto {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .col-6,
+      .col-12 {
+        width: 100%;
+      }
+
+      .row>.col-2,
+      .row>.col-3,
+      .row>.col-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+
+      .row>.col-2.text-start,
+      .row>.col-2.text-end,
+      .row>.col-3 {
+        text-align: center;
+      }
+    }
+
+    /* 창 크기가 매우 작을 때, 레이아웃을 더욱 단순화 */
+    @media (max-width: 576px) {
+      header {
+        font-size: 1.5rem;
+        padding: 20px 10px;
+      }
+
+      .input-group-text {
+        display: none;
+      }
+
+      .studentInput {
+        font-size: 0.9rem;
+      }
+
+      button.btn {
+        width: 100%;
+      }
+
+      table {
+        font-size: 0.8rem;
+      }
+    }
+
+    
+    </style>
+    <!-- /* 모달창 스타일 */ -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- 부트스트랩 JS 및 Popper.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+
+  <header class="display-6 text-center p-5 fw-bold">KOSTA 초등학교 성적 관리</header>
+
+  <div class="container text-center">
+
+    <form action="#" name="inputForm">
+      <div class="row">
+        <div class="col-2">
+          <label class="visually-hidden" for="autoSizingInputGroup">번호</label>
+          <div class="input-group">
+            <div class="input-group-text"><i class="fa-regular fa-id-card"></i></div>
+            <input type="number" class="form-control studentInput" placeholder="번호" name="sno">
+          </div>
+        </div>
+
+        <div class="col-2">
+          <label class="visually-hidden" for="autoSizingInputGroup">이름</label>
+          <div class="input-group">
+            <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
+            <input type="text" class="form-control studentInput" placeholder="이름" name="sname">
+          </div>
+        </div>
+
+        <div class="col-2">
+          <label class="visually-hidden" for="autoSizingInputGroup">국어</label>
+          <div class="input-group">
+            <div class="input-group-text"><i class="fa-brands fa-korvue"></i></div>
+            <input type="number" class="form-control studentInput" placeholder="국어점수" name="kor">
+          </div>
+        </div>
+
+        <div class="col-2">
+          <label class="visually-hidden" for="autoSizingInputGroup">영어</label>
+          <div class="input-group">
+            <div class="input-group-text"><i class="fa-solid fa-e"></i></div>
+            <input type="number" class="form-control studentInput" placeholder="영어점수" name="eng">
+          </div>
+        </div>
+
+        <div class="col-2">
+          <label class="visually-hidden" for="autoSizingInputGroup">수학</label>
+          <div class="input-group">
+            <div class="input-group-text"><i class="fa-solid fa-m"></i></div>
+            <input type="number" class="form-control studentInput" placeholder="수학점수" name="math">
+          </div>
+        </div>
+
+        <div class="col-auto">
+          <button type="button" class="btn btn-primary" id="addBtn"> 등 록 </button>
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-warning" id="delBtn"> 삭 제 </button>
+        </div>
+      </div>
+    </form>
+    <hr>
+    <div class="row mt-4 mb-2">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-2">
+            <select class="form-select schOption">
+              <option value="ssn" selected>번호</option>
+              <option value="name">이름</option>
+            </select>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control schInput" placeholder="공백시 전체 검색">
+          </div>
+          <div class="col-2 text-start">
+            <button type="button" class="btn btn-primary" id="schBtn"> 검 색 </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 ">
+        <div class="row justify-content-end">
+          <div class="col-2 text-end">
+            <label for="sortSelect" class="col-form-label">정렬</label>
+          </div>
+          <div class="col-3">
+            <select class="form-select" id="sortSelect">
+              <option value="rank" selected>순위</option>
+              <option value="ssn">번호</option>
+              <option value="name">이름</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <table class="table table-striped table-hover">
+
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+  </div>
+  <div class="row bg-secondary"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+  
+  <div class="modal" id="myModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">오류!</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="modal-body-text">오류가 발생했습니다.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+
+</html>
