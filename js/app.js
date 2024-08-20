@@ -241,6 +241,7 @@ const delStudent = function (no) {
             saveStorage();
         };
     };
+    
     if (error === 1) showModal("삭제하고자 하는 학생 번호를 바르게 입력해주세요.");
 };
 
