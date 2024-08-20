@@ -1,16 +1,10 @@
-// import { Student } from "./Student.js";
-// import { StudentRepository } from "./student-repository.js";
+import { Student } from "./Student.js";
+import { StudentRepository } from "./student-repository.js";
 import validator from "./modules/validator.js"
 
-// import { EventHandler } from "./event-handler.js";
-// let studentRepository = new StudentRepository();
+const studentRepository = new StudentRepository;
 
-// let eventHandler = new EventHandler();
-// eventHandler.eventRegist();
-
-// export {studentRepository}
-
-// 초기화
+// 선택자를 통한 돔 요소 접근 변수 선언
 const addStudentBtn = document.querySelector("#addBtn");
 const delStudentBtn = document.querySelector("#delBtn");
 const schStudentBtn = document.querySelector("#schBtn");
@@ -92,7 +86,6 @@ function printList(inputValue, option, searchType) {
 
             // 일부 일치 필터링
             if ((option === 1 ? String(student.sno) : student.name).includes(inputValue)) {
-
                 tempArray.push(student);
             };
         }
@@ -241,7 +234,7 @@ const delStudent = function (no) {
             saveStorage();
         };
     };
-    
+
     if (error === 1) showModal("삭제하고자 하는 학생 번호를 바르게 입력해주세요.");
 };
 
