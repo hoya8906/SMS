@@ -5,12 +5,6 @@ import validator from "./modules/validator.js"
 // import { EventHandler } from "./event-handler.js";
 // let studentRepository = new StudentRepository();
 
-// 테스트를 위한 더미데이터 입력
-// studentRepository.addStudent(new Student(10, '김기정', 90, 80, 60));
-// studentRepository.addStudent(new Student(11, '최기정', 100, 90, 90));
-// studentRepository.addStudent(new Student(12, '박기정', 92, 82, 80));
-// studentRepository.addStudent(new Student(13, '최기정', 95, 85, 88));
-
 // let eventHandler = new EventHandler();
 // eventHandler.eventRegist();
 
@@ -23,6 +17,14 @@ const schStudentBtn = document.querySelector("#schBtn");
 const searchOption = document.querySelector(".schOption")
 const sortSelect = document.querySelector("#sortSelect");
 const studentInput = document.querySelectorAll(".studentInput");
+const inputs = document.querySelector("#inputs")
+
+// 필요할지도..?
+// const snoInput = studentInput[0];
+// const nameInput = studentInput[1];
+// const korInput = studentInput[2];
+// const engInput = studentInput[3];
+// const matInput = studentInput[4];
 
 let students;
 let opt = 1;
@@ -83,9 +85,16 @@ function printList(inputValue, option, searchType) {
 
     if (option > 0) {
         students.forEach((student) => {
-            if ((option === 1 ? String(student.sno) : student.name) === inputValue) {
+            // 전체 일치 필터링
+            // if ((option === 1 ? String(student.sno) : student.name) === inputValue) {
+            //     tempArray.push(student);
+            // }
+
+            // 일부 일치 필터링
+            if ((option === 1 ? String(student.sno) : student.name).includes(inputValue)) {
+
                 tempArray.push(student);
-            }
+            };
         }
         );
     } else {
@@ -94,39 +103,51 @@ function printList(inputValue, option, searchType) {
 
     tempArray = sortList(tempArray, searchType);
 
+
     // 학생 정보 출력
-    const showList = document.querySelector(".table");
-    const tBody = document.createElement("tbody");
+    if (tempArray.length > 0) {
+        printHeader();
+        const showList = document.querySelector(".table");
+        const tBody = document.createElement("tbody");
 
-    tempArray.forEach(element => {
-        const newList = document.createElement("tr");
+        tempArray.forEach(element => {
+            const newList = document.createElement("tr");
 
-        const values = [
-            element.sno,
-            element.name,
-            element.kor,
-            element.eng,
-            element.mat,
-            element.totalScore,
-            Math.round(element.avgScore * 10) / 10,
-            element.rank,
-        ];
+            const values = [
+                element.sno,
+                element.name,
+                element.kor,
+                element.eng,
+                element.mat,
+                element.totalScore,
+                Math.round(element.avgScore * 10) / 10,
+                element.rank,
+            ];
 
-        values.forEach(value => {
-            const cell = document.createElement("td");
-            cell.textContent = value;
-            newList.appendChild(cell);
+            values.forEach(value => {
+                const cell = document.createElement("td");
+                cell.textContent = value;
+                newList.appendChild(cell);
+            });
+
+            showList.appendChild(tBody);
+            tBody.appendChild(newList);
         });
+    } else {
+        clearList();
 
-        showList.appendChild(tBody);
-        tBody.appendChild(newList);
-    });
+        const tableContainer = document.querySelector("#tableContainer");
+        const emptyList = document.createElement("p");
+        emptyList.textContent = "검색된 항목이 없습니다.";
+        tableContainer.append(emptyList);
+    }
 };
 
 // 목록 삭제
 const clearList = function () {
     const tempList = document.querySelectorAll("td");
     tempList.forEach(element => element.remove());
+    document.querySelectorAll("p").forEach(p => p.remove());
 }
 
 // 입력창 비우기
@@ -173,7 +194,6 @@ const addStudent = function () {
         };
     };
 
-
     if (pass === 0) showModal("입력한 내용을 다시 확인해주세요.");
 
     if (pass === 1) {
@@ -195,17 +215,33 @@ const addStudent = function () {
             totalScore: totalScore,
             avgScore: avgScore
         }, pass)
+        setRank();
+        clearInput();
+        printHeader();
+        printList();
+        saveStorage();
     }
 };
 
 // 학생 삭제
 const delStudent = function (no) {
+    let error = 1;
+
     for (let index = 0; index < students.length; index++) {
         const element = students[index];
         if (parseInt(element.sno) === parseInt(no)) {
+            error = 0;
             students.splice(index, 1);
+
+            setRank();
+
+            printHeader();
+            printList();
+            clearInput();
+            saveStorage();
         };
     };
+    if (error === 1) showModal("삭제하고자 하는 학생 번호를 바르게 입력해주세요.");
 };
 
 // 순위 산출 재설정
@@ -224,14 +260,7 @@ setRank();
 
 // 학생 등록 버튼
 addStudentBtn.addEventListener("click", () => {
-
     addStudent();
-    setRank();
-
-    printHeader();
-    printList();
-    clearInput();
-    saveStorage();
 }
 );
 
@@ -240,13 +269,6 @@ delStudentBtn.addEventListener("click", () => {
     let delNo = studentInput[0].value;
 
     delStudent(parseInt(delNo));
-    setRank();
-
-    printHeader();
-    printList();
-    clearInput();
-
-    saveStorage();
 })
 
 // 검색 옵션 변경
@@ -254,34 +276,62 @@ searchOption.addEventListener("change", (event) => {
     opt = (event.target.value === "ssn" ? 1 : 2)
 })
 
-// 학생 검색(옵션에 따라)
-schStudentBtn.addEventListener("click", () => {
-    const searchInput = document.querySelector(".schInput")
+const searchInput = document.querySelector(".schInput")
+
+// 학생 검색 함수
+const searchStudent = function () {
     clearList();
-    printHeader();
+    // if (students.length > 0) printHeader();
 
     if (searchInput.value) {
         printList(searchInput.value, opt)
     } else {
-        printList();
+        printList(students, 0, sortOption());
     }
+};
+
+// 학생 검색(옵션에 따라)
+schStudentBtn.addEventListener("click", () => {
+    searchStudent();
 })
+
+searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") searchStudent();
+});
+
+
+// 정렬 옵션 선택
+const sortOption = function () {
+    switch (sortSelect.value) {
+        case "ssn":
+            return 1;
+        case "name":
+            return 2;
+        default:
+            return 3;
+    }
+};
 
 // 선택된 옵션에 따라 정렬
 sortSelect.addEventListener("change", (event) => {
 
     clearList();
     printHeader();
+    printList(students, 0, sortOption());
+});
 
-    switch (event.target.value) {
-        case "ssn":
-            printList(students, 0, 1)
-            break;
-        case "name":
-            printList(students, 0, 2)
-            break;
-        default:
-            printList(students, 0, 3)
-            break;
+// 엔터키로 등록
+inputs.addEventListener("keydown", (event) => {
+    if (event.key === 'Enter') addStudent();
+});
+
+// 모달 창 엔터키로 닫기
+const modalWindow = document.querySelector("#myModal");
+modalWindow.addEventListener("keydown", (event) => {
+    if (event.key === 'Enter') {
+        const myModal = bootstrap.Modal.getInstance(modalWindow);
+        if (myModal) {
+            myModal.hide();
+        }
     }
 });
