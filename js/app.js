@@ -35,10 +35,11 @@ function showModal(message) {
     const modalBodyText = document.getElementById("modal-body-text");
     modalBodyText.textContent = message;
 
-    // Bootstrap 모달 인스턴스 생성 및 표시
     const myModal = new bootstrap.Modal(document.getElementById('myModal'));
     myModal.show();
 }
+
+
 
 // 목록 정렬 : 옵션 값에 따라 여러 방법으로 정렬한 배열을 반환
 function sortList(array, opt) {
@@ -139,7 +140,7 @@ function printList(inputValue, option, searchType) {
         clearList();
 
         const tableContainer = document.querySelector("#tableContainer");
-        const emptyList = document.createElement("p");
+        const emptyList = document.createElement("span");
         emptyList.textContent = "검색된 항목이 없습니다.";
         tableContainer.append(emptyList);
     }
@@ -148,8 +149,10 @@ function printList(inputValue, option, searchType) {
 // 목록 삭제 : 다음 출력을 위한 화면 클리닝
 const clearList = function () {
     document.querySelectorAll("td").forEach(td => td.remove());
-    document.querySelectorAll("p").forEach(p => p.remove());
+    document.querySelectorAll("span").forEach(span => span.remove());
 }
+
+// printList();
 
 // 입력창 비우기 : 등록, 삭제 후 입력창 클리닝
 const clearInput = function () {
@@ -250,7 +253,7 @@ const delStudent = function (no) {
     };
 
     // 삭제하고자 하는 번호를 students에서 찾을 수 없으면:
-    if (error === 1) showModal("삭제하고자 하는 학생 번호를 바르게 입력해주세요.");
+    if (error === 1) showModal("삭제하고자 하는 학생 번호를 입력해주세요.");
 };
 
 // 랭크 매기는 함수
@@ -304,6 +307,7 @@ schStudentBtn.addEventListener("click", () => {
 })
 
 searchInput.addEventListener("keydown", (event) => {
+    
     if (event.key === "Enter") searchStudent();
 });
 
