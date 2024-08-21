@@ -1,6 +1,9 @@
-import { Student } from "./Student.js";
 import { StudentRepository } from "./student-repository.js";
 import validator from "./modules/validator.js"
+
+import { Student } from "./Student.js";
+import eventHandler from "./modules/event-handler.js"
+
 
 const studentRepository = new StudentRepository;
 
@@ -105,8 +108,9 @@ function printList(inputValue, option, searchType) {
         const showList = document.querySelector(".table");
         const tBody = document.createElement("tbody");
 
-        // 행 만들기
         tempArray.forEach(element => {
+
+            // 행 만들기
             const newList = document.createElement("tr");
 
             const values = [
@@ -131,6 +135,7 @@ function printList(inputValue, option, searchType) {
             tBody.appendChild(newList);
         });
     } else {
+        // 저장된 학생 정보가 없으면:
         clearList();
 
         const tableContainer = document.querySelector("#tableContainer");
@@ -140,13 +145,13 @@ function printList(inputValue, option, searchType) {
     }
 };
 
-// 목록 삭제 : 다음 출력을 위해, 화면을 깨끗이!
+// 목록 삭제 : 다음 출력을 위한 화면 클리닝
 const clearList = function () {
     document.querySelectorAll("td").forEach(td => td.remove());
     document.querySelectorAll("p").forEach(p => p.remove());
 }
 
-// 입력창 비우기 : 등록, 삭제 후 입력창을 깨끗이!
+// 입력창 비우기 : 등록, 삭제 후 입력창 클리닝
 const clearInput = function () {
     studentInput.forEach(element => element.value = "")
 };
@@ -166,6 +171,8 @@ const saveStudent = function (student, no) {
 
 // 학생 추가
 const addStudent = function () {
+
+    // 입력값 받아오기
     let sno = parseInt(studentInput[0].value);
     let name = studentInput[1].value;
     let korScore = parseInt(studentInput[2].value);
@@ -178,8 +185,10 @@ const addStudent = function () {
         sno, name, korScore, engScore, matScore
     ];
 
+    // 검증 초기값
     let pass = 1;
 
+    // 입력값 검증 과정
     for (let index = 0; index < tempArray.length; index++) {
         const element = tempArray[index];
         if (index === 1) {
